@@ -5,7 +5,7 @@ import {
   HttpEvent,
   HttpInterceptor
 } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 @Injectable()
 export class LogInterceptor implements HttpInterceptor {
@@ -13,6 +13,10 @@ export class LogInterceptor implements HttpInterceptor {
   constructor() {}
 
   intercept(request: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
-    return next.handle(request);
+    console.log('Richista dal log interceptor: ', request);
+
+    return next.handle(request).pipe(tap(nuovaRichiesta => {
+      console.log('Richista dal log interceptor: ', nuovaRichiesta);
+    }));
   }
 }
